@@ -1,40 +1,47 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
-import ExpenseForm from "./ExpenseForm"; // Import ExpenseForm component
-import ExpenseList from "./ExpenseList"; // Import ExpenseList component
+import ExpenseForm from "./ExpenseForm";
+import ExpenseList from "./ExpenseList";
+import useStore from "./useStore";
 
 const BudgetTracker = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [budget, setBudget] = useState(0);
+  const { budget, expenses, setBudget } = useStore((state) => state);
+  const [newBudget, setNewBudget] = useState(budget);
 
-  const addExpense = (expense) => {
-    setExpenses([...expenses, { ...expense, id: uuidv4() }]); // Add a new expense
+  const totalExpenses = expenses.reduce(
+    (total, expense) => total + expense.amount,
+    0
+  );
+  const balance = budget - totalExpenses;
+
+  const handleBudgetChange = (e) => {
+    setNewBudget(e.target.value);
   };
 
-  const deleteExpense = (id) => {
-    setExpenses(expenses.filter((expense) => expense.id !== id)); // Delete an expense
-  };
-
-  const calculateTotalExpenses = () => {
-    return expenses.reduce((total, expense) => total + expense.amount, 0);
+  const updateBudget = () => {
+    setBudget(Number(newBudget));
   };
 
   return (
-    <div>
+    <div className="budget-tracker">
       <h1>Budget Tracker</h1>
-      <input
-        type="number"
-        placeholder="Enter Budget"
-        value={budget}
-        onChange={(e) => setBudget(e.target.value)}
-        min="0"
-      />
-      <h2>Budget: ${budget}</h2>
-      <h3>Total Expenses: ${calculateTotalExpenses()}</h3>
-      <h3>Remaining Budget: ${budget - calculateTotalExpenses()}</h3>
-      <ExpenseForm addExpense={addExpense} /> {/* Render ExpenseForm */}
-      <ExpenseList expenses={expenses} deleteExpense={deleteExpense} />{" "}
-      {/* Render ExpenseList */}
+      <div className="budget-summary">
+        <p>Budget: ${budget}</p>
+        <p>Expenses: ${totalExpenses}</p>
+        <p>Balance: ${balance}</p>
+      </div>
+
+      <div className="budget-update">
+        <input
+          type="number"
+          value={newBudget}
+          onChange={handleBudgetChange}
+          placeholder="Enter new budget"
+        />
+        <button onClick={updateBudget}>Update Budget</button>
+      </div>
+
+      <ExpenseForm />
+      <ExpenseList />
     </div>
   );
 };
