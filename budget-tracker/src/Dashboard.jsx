@@ -98,6 +98,24 @@ const Dashboard = ({ user, setUser }) => {
     setRemainingBudget(newIncome);
   };
 
+  const saveChanges = () => {
+    // Assuming there's a save function that saves the user data to local storage, a database, or API
+    const updatedUser = {
+      ...user,
+      income: income,
+      expenses: expenses,
+      savingsGoals: savingsGoals,
+    };
+    setUser(updatedUser);
+    alert("Changes saved successfully!");
+  };
+
+  const handleLogout = () => {
+    // Handle logout: clear user data and redirect to login
+    setUser(null); // Assuming `setUser` is used to clear user data
+    navigate("/login"); // Navigate to the login page
+  };
+
   return (
     <div className="dashboard-container">
       <h2>Welcome, {user.name}!</h2>
@@ -193,6 +211,12 @@ const Dashboard = ({ user, setUser }) => {
           <li key={index}>{tip}</li>
         ))}
       </ul>
+
+      {/* Save Changes and Logout Buttons */}
+      <div className="buttons-container">
+        <button onClick={saveChanges}>Save Changes</button>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
     </div>
   );
 };

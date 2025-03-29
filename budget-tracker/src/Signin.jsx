@@ -28,7 +28,8 @@ const Signin = ({ setUser }) => {
 
   return (
     <div className="auth-container">
-      <h2>Sign In</h2>
+      <h2>Welcome to your best budget tracker</h2>
+      <p>Lets help you save more and spend wisely</p>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSignin}>
         <input
