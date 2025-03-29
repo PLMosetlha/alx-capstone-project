@@ -228,3 +228,147 @@ p {
 .save-btn:hover {
   background: #218838;
 }
+.insight-message.red {
+  color: red;
+  font-weight: bold;
+  animation: bounceInOut 2s ease-in-out infinite;
+}
+
+.insight-message.green {
+  color: green;
+  font-weight: bold;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes bounceInOut {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.expense-summary {
+  margin-bottom: 20px;
+}
+
+.progress-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  height: 20px;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 5px;
+}
+
+.progress-text {
+  font-weight: bold;
+  text-align: center;
+}
+
+.save-message {
+  color: green;
+  font-size: 14px;
+}
+
+.insight-message {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.insight-message.red {
+  color: red;
+}
+
+.insight-message.green {
+  color: green;
+}
+
+.insight-message.animated {
+  animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+/* Insight Message Styles */
+.insight-message {
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.insight-message.green {
+  background-color: #28a745;
+  color: white;
+}
+
+.insight-message.red {
+  background-color: red;
+  color: white;
+}
+
+.insight-message.bounce-alert {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Financial Tips */
+h3 {
+  color: #333;
+}
+
+button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}

@@ -31,13 +31,13 @@ const App = () => {
             user ? (
               <Dashboard user={user} setUser={setUser} />
             ) : (
-              <Navigate to="/signup" />
+              <Navigate to="/signin" />
             )
           }
         />
         <Route
           path="*"
-          element={<Navigate to={user ? "/dashboard" : "/signup"} />}
+          element={<Navigate to={user ? "/dashboard" : "/signin"} />}
         />
       </Routes>
     </Router>

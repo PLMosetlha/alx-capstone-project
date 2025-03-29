@@ -3,146 +3,122 @@ import { useNavigate } from "react-router-dom";
 import "./index.css";
 
 const Dashboard = ({ user, setUser }) => {
+  const [initialAmount, setInitialAmount] = useState(user.income || 0);
   const [income, setIncome] = useState(user.income || 0);
   const [expenses, setExpenses] = useState(user.expenses || []);
-  const [savingsGoals, setSavingsGoals] = useState(user.savingsGoals || []);
   const [expenseDesc, setExpenseDesc] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
+  const [expenseCategory, setExpenseCategory] = useState("essential");
+  const [savingsGoals, setSavingsGoals] = useState(user.savingsGoals || []);
   const [goalDesc, setGoalDesc] = useState("");
   const [goalAmount, setGoalAmount] = useState("");
-  const [saveMessage, setSaveMessage] = useState(""); // State for save notification
+  const [remainingBudget, setRemainingBudget] = useState(user.income || 0);
+  const [insightColor, setInsightColor] = useState("green");
+  const [bounce, setBounce] = useState(false);
+  const [financialTips, setFinancialTips] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load user data from localStorage when the component mounts
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+    updateBudget();
+  }, [expenses, savingsGoals]);
 
-    if (storedUser) {
-      setUser(storedUser);
-      setIncome(storedUser.income);
-      setExpenses(storedUser.expenses);
-      setSavingsGoals(storedUser.savingsGoals);
+  const updateBudget = () => {
+    const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+    const totalSavings = savingsGoals.reduce(
+      (sum, goal) => sum + goal.amount,
+      0
+    );
+    const updatedIncome = initialAmount - totalExpenses - totalSavings;
+    setIncome(updatedIncome);
+    setRemainingBudget(updatedIncome);
+    setInsights(totalExpenses, updatedIncome);
+  };
+
+  const setInsights = (totalExpenses, updatedIncome) => {
+    if (totalExpenses > updatedIncome) {
+      setInsightColor("red");
+      setBounce(true);
+    } else {
+      setInsightColor("green");
+      setBounce(true);
     }
-  }, [setUser]);
 
-  // Update local storage with updated user data
-  const updateUser = (updatedUser) => {
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    if (totalExpenses > updatedIncome) {
+      setFinancialTips([
+        "Consider cutting back on non-essential expenses.",
+        "Create a strict budget to track spending.",
+        "Focus on saving first, then spend on essentials!",
+      ]);
+    } else {
+      setFinancialTips([
+        "Good job! Keep monitoring your expenses.",
+        "Consider saving more to reach your financial goals.",
+        "Avoid unnecessary purchases and stay within your budget.",
+      ]);
+    }
   };
 
   const addExpense = () => {
-    if (
-      !expenseDesc ||
-      !expenseAmount ||
-      isNaN(expenseAmount) ||
-      expenseAmount <= 0
-    )
-      return;
-
-    const newExpense = {
-      description: expenseDesc,
-      amount: parseFloat(expenseAmount),
-    };
-    const updatedExpenses = [...expenses, newExpense];
-    setExpenses(updatedExpenses);
-
-    // Update income after expense is added
-    setIncome((prevIncome) => {
-      const newIncome = prevIncome - parseFloat(expenseAmount);
-      return newIncome >= 0 ? newIncome : 0;
-    });
-
-    updateUser({ ...user, expenses: updatedExpenses, income });
+    if (!expenseDesc || !expenseAmount) return;
+    const newExpenses = [
+      ...expenses,
+      {
+        description: expenseDesc,
+        amount: parseFloat(expenseAmount),
+        category: expenseCategory,
+      },
+    ];
+    setExpenses(newExpenses);
     setExpenseDesc("");
     setExpenseAmount("");
   };
 
-  const handleExpenseAmountChange = (e) => {
-    const value = e.target.value;
-    if (!isNaN(value) && value >= 0) {
-      setExpenseAmount(value);
-    } else {
-      setExpenseAmount("");
-    }
-  };
-
-  const handleIncomeChange = (e) => {
-    const value = parseFloat(e.target.value);
-    if (!isNaN(value) && value >= 0) {
-      setIncome(value);
-    }
-  };
-
-  const handleSaveChanges = () => {
-    // Save updated expenses and income to localStorage
-    updateUser({ ...user, expenses, income, savingsGoals });
-    console.log("Changes saved to localStorage");
-
-    // Set save message notification
-    setSaveMessage("Changes have been saved!");
-
-    // Hide the message after 3 seconds
-    setTimeout(() => {
-      setSaveMessage("");
-    }, 3000);
+  const deleteExpense = (index) => {
+    const newExpenses = expenses.filter((_, i) => i !== index);
+    setExpenses(newExpenses);
   };
 
   const addSavingsGoal = () => {
-    if (!goalDesc || !goalAmount || isNaN(goalAmount) || goalAmount <= 0)
-      return;
-
-    const newGoal = { goal: goalDesc, amount: parseFloat(goalAmount) };
-    const updatedGoals = [...savingsGoals, newGoal];
-    setSavingsGoals(updatedGoals);
-    updateUser({ ...user, savingsGoals: updatedGoals });
-
+    if (!goalDesc || !goalAmount) return;
+    const newGoal = { description: goalDesc, amount: parseFloat(goalAmount) };
+    setSavingsGoals([...savingsGoals, newGoal]);
     setGoalDesc("");
     setGoalAmount("");
   };
 
   const deleteSavingsGoal = (index) => {
-    const updatedGoals = savingsGoals.filter((goal, i) => i !== index);
-    setSavingsGoals(updatedGoals);
-    updateUser({ ...user, savingsGoals: updatedGoals });
+    const newGoals = savingsGoals.filter((_, i) => i !== index);
+    setSavingsGoals(newGoals);
   };
 
-  const deleteExpense = (index) => {
-    const updatedExpenses = expenses.filter((expense, i) => i !== index);
-    setExpenses(updatedExpenses);
-
-    // Recalculate income after deleting an expense
-    const expenseToDelete = expenses[index];
-    setIncome((prevIncome) => prevIncome + expenseToDelete.amount);
-
-    updateUser({ ...user, expenses: updatedExpenses, income });
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-    navigate("/signin");
+  const handleIncomeChange = (e) => {
+    const newIncome = parseFloat(e.target.value) || 0;
+    setInitialAmount(newIncome);
+    setIncome(newIncome);
+    setRemainingBudget(newIncome);
   };
 
   return (
     <div className="dashboard-container">
       <h2>Welcome, {user.name}!</h2>
-      <p>Email: {user.email}</p>
-      <h3>Income: ${income}</h3>
+      <h3>Initial Amount: ${initialAmount}</h3>
+      <h3>Income Budget: ${income}</h3>
       <input
         type="number"
+        placeholder="Set Income Budget"
         value={income}
         onChange={handleIncomeChange}
-        placeholder="Enter budget"
       />
-      <h3>Expenses</h3>
-      <ul>
-        {expenses.map((exp, index) => (
-          <li key={index}>
-            {exp.description}: ${exp.amount}
-            <button onClick={() => deleteExpense(index)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <h3>Expense Summary</h3>
+      <p>
+        Total Expenses: ${expenses.reduce((sum, exp) => sum + exp.amount, 0)}
+      </p>
+      <p>
+        Total Savings: $
+        {savingsGoals.reduce((sum, goal) => sum + goal.amount, 0)}
+      </p>
+      <p>Remaining Budget: ${remainingBudget}</p>
+      <h3>Add Expense</h3>
       <input
         type="text"
         placeholder="Expense Description"
@@ -153,19 +129,27 @@ const Dashboard = ({ user, setUser }) => {
         type="number"
         placeholder="Amount"
         value={expenseAmount}
-        onChange={handleExpenseAmountChange}
+        onChange={(e) => setExpenseAmount(e.target.value)}
       />
+      <select
+        id="category"
+        value={expenseCategory}
+        onChange={(e) => setExpenseCategory(e.target.value)}
+      >
+        <option value="essential">Essential</option>
+        <option value="non-essential">Non-Essential</option>
+      </select>
       <button onClick={addExpense}>Add Expense</button>
-
-      <h3>Savings Goals</h3>
+      <h3>Expenses</h3>
       <ul>
-        {savingsGoals.map((goal, index) => (
+        {expenses.map((exp, index) => (
           <li key={index}>
-            {goal.goal}: ${goal.amount}
-            <button onClick={() => deleteSavingsGoal(index)}>Delete</button>
+            {exp.description}: ${exp.amount} - {exp.category}{" "}
+            <button onClick={() => deleteExpense(index)}>Delete</button>
           </li>
         ))}
       </ul>
+      <h3>Savings Goals</h3>
       <input
         type="text"
         placeholder="Goal Description"
@@ -178,16 +162,37 @@ const Dashboard = ({ user, setUser }) => {
         value={goalAmount}
         onChange={(e) => setGoalAmount(e.target.value)}
       />
-      <button onClick={addSavingsGoal}>Add Goal</button>
+      <button onClick={addSavingsGoal}>Add Savings Goal</button>
+      <ul>
+        {savingsGoals.map((goal, index) => (
+          <li key={index}>
+            {goal.description}: ${goal.amount}{" "}
+            <button onClick={() => deleteSavingsGoal(index)}>Delete</button>
+          </li>
+        ))}
+      </ul>
 
-      <button onClick={handleSaveChanges}>Save Changes</button>
+      {/* Smart Insights Section */}
+      <div>
+        <h3>Smart Insights</h3>
+        <p
+          className={`insight-message ${insightColor} ${
+            bounce ? "bounce-alert" : ""
+          }`}
+        >
+          {insightColor === "green"
+            ? `Great job! You're within your budget! 👍`
+            : `You're overspending! Consider cutting back! 😞`}
+        </p>
+      </div>
 
-      {/* Display save message */}
-      {saveMessage && <p className="save-message">{saveMessage}</p>}
-
-      <button className="logout-btn" onClick={handleLogout}>
-        Logout
-      </button>
+      {/* Financial Tips Section */}
+      <h3>Financial Tips</h3>
+      <ul>
+        {financialTips.map((tip, index) => (
+          <li key={index}>{tip}</li>
+        ))}
+      </ul>
     </div>
   );
 };
