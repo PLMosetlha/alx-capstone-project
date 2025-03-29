@@ -29,7 +29,7 @@ Persistent Data: Data is saved locally in the browser to allow users to view the
 
 INSTALLATION:
 
-To run this project locally, follow these steps:
+To run this project locally, follow the following steps:
 
 Clone this repository
 
