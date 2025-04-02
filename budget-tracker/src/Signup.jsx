@@ -49,6 +49,9 @@ const Signup = ({ setUser }) => {
 
   return (
     <div className="auth-container">
+      <h2>Welcome to your best budget tracker</h2>
+      <p>Lets help you save more and spend wisely</p>
+
       <h2>{isSignUp ? "Sign Up" : "Sign In"}</h2>
       <form onSubmit={handleSubmit} className="auth-form">
         {isSignUp && (

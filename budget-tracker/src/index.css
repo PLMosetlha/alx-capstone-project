@@ -1,30 +1,202 @@
-/* Global Styles */
+/* Global Styling */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f4;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
 }
 
-/* Container */
-.container {
-  max-width: 600px;
-  margin: 20px auto;
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 800px;
+  margin: 50px auto;
+  background: rgb(66, 166, 184);
   padding: 20px;
-  background: white;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #141313;
   text-align: center;
 }
+.dashboard-container h3 {
+  color: rgb(9, 10, 9);
+}
 
+/* Inputs & Select */
+input,
+select {
+  width: 60%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Buttons */
+button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+/* Expenses & Savings Goals */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #f9f9f9;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li button {
+  background-color: #dc3545;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+li button:hover {
+  background-color: #c82333;
+}
+
+/* Smart Insights */
+.insight-message {
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  transition: transform 0.3s ease-in-out;
+}
+
+.insight-message.green {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.insight-message.red {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+/* Continuous Bounce Alert Animation */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+  75% {
+    transform: translateY(-5px);
+  }
+}
+
+.bounce-alert {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+/* Buttons Container */
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .buttons-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    width: 95%;
+    padding: 10px;
+  }
+
+  h2,
+  h3 {
+    font-size: 18px;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .buttons-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Logout Button */
+.logout-button {
+  background-color: #dc3545 !important;
+}
+
+.logout-button:hover {
+  background-color: #c82333 !important;
+}
+
+.toggle-btn {
+  color: #2945e9;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
+}
 /* Auth Forms */
 .auth-container {
   width: 100%;
   max-width: 400px;
   margin: auto;
   padding: 20px;
-  background: white;
-  border-radius: 8px;
+  background: hsl(321, 22%, 59%);
+  border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
@@ -34,7 +206,7 @@ body {
 }
 
 .auth-container input {
-  width: 100%;
+  width: 50%;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;
@@ -55,320 +227,33 @@ body {
   background: #218838;
 }
 
-/* Dashboard Styles */
-.dashboard-container {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
-  background: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-h2,
-h3 {
-  color: #333;
-}
-
-input {
-  width: 80%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background: #0056b3;
-}
-
-.logout-btn {
-  background: red;
-}
-
-@media screen and (max-width: 768px) {
-  .dashboard-container,
-  .auth-container {
-    width: 95%;
-    padding: 15px;
-  }
-
-  input {
-    width: 100%;
-  }
-
-  button {
-    width: 100%;
-    padding: 12px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  h2 {
-    font-size: 20px;
-  }
-
-  h3 {
-    font-size: 18px;
-  }
-}
-.delete-btn {
-  background: red;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  margin-left: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.delete-btn:hover {
-  background: darkred;
-}
-
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background: #0056b3;
-}
-
-.logout-btn {
-  background: red;
-}
-
-.auth-container {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-input {
-  padding: 10px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-button {
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-.error {
-  color: red;
-  font-size: 14px;
-}
-
-.toggle-btn {
-  color: #007bff;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.toggle-btn:hover {
-  text-decoration: underline;
-}
-
-p {
-  margin-top: 10px;
-}
-.save-btn {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.save-btn:hover {
-  background: #218838;
-}
-.insight-message.red {
-  color: red;
-  font-weight: bold;
-  animation: bounceInOut 2s ease-in-out infinite;
-}
-
-.insight-message.green {
-  color: green;
-  font-weight: bold;
-  animation: fadeIn 1s ease-in-out;
-}
-
-@keyframes bounceInOut {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-}
-
+/* Welcome Message Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-  }
-}
-
-.expense-summary {
-  margin-bottom: 20px;
-}
-
-.progress-container {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  height: 20px;
-}
-
-.progress-bar {
-  height: 100%;
-  border-radius: 5px;
-}
-
-.progress-text {
-  font-weight: bold;
-  text-align: center;
-}
-
-.save-message {
-  color: green;
-  font-size: 14px;
-}
-
-.insight-message {
-  font-size: 16px;
-  font-weight: bold;
-  padding: 10px;
-}
-
-.insight-message.red {
-  color: red;
-}
-
-.insight-message.green {
-  color: green;
-}
-
-.insight-message.animated {
-  animation: bounce 1s infinite alternate;
-}
-
-@keyframes bounce {
-  0% {
     transform: translateY(0);
   }
-  100% {
-    transform: translateY(-10px);
-  }
-}
-/* Insight Message Styles */
-.insight-message {
-  font-size: 18px;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
-  transition: all 0.3s ease;
 }
 
-.insight-message.green {
-  background-color: #28a745;
-  color: white;
-}
-
-.insight-message.red {
-  background-color: red;
-  color: white;
-}
-
-.insight-message.bounce-alert {
-  animation: bounce 1s infinite;
-}
-
-@keyframes bounce {
+@keyframes pulse {
   0%,
   100% {
-    transform: translateY(0);
-  }
-  25% {
-    transform: translateY(-10px);
+    transform: scale(1);
   }
   50% {
-    transform: translateY(0);
-  }
-  75% {
-    transform: translateY(-10px);
+    transform: scale(1.05);
   }
 }
 
-/* Financial Tips */
-h3 {
-  color: #333;
-}
-
-button {
-  padding: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #218838;
+.welcome-message {
+  font-size: 18px;
+  text-align: center;
+  margin: 20px 0;
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards, pulse 2s infinite ease-in-out;
+  color: #013613;
 }

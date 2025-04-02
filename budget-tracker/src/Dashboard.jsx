@@ -52,7 +52,7 @@ const Dashboard = ({ user, setUser }) => {
     } else {
       setFinancialTips([
         "Good job! Keep monitoring your expenses.",
-        "Consider saving more to reach your financial goals.",
+        "Consider saving at least 40% or more to reach your financial goals.",
         "Avoid unnecessary purchases and stay within your budget.",
       ]);
     }
@@ -119,6 +119,13 @@ const Dashboard = ({ user, setUser }) => {
   return (
     <div className="dashboard-container">
       <h2>Welcome, {user.name}!</h2>
+      <p className="welcome-message">
+        Everyone deserves a strong financial foundation. Lets empower you to
+        make informed financial decisions to achieve your goals. We are excited
+        to see the positive impact this budget tracker will have on your
+        finances. Welcome aboard! Now lets get started. Enter your monthly
+        budget below and explore the app's features.
+      </p>
       <h3>Initial Amount: ${initialAmount}</h3>
       <h3>Income Budget: ${income}</h3>
       <input
@@ -136,7 +143,7 @@ const Dashboard = ({ user, setUser }) => {
         {savingsGoals.reduce((sum, goal) => sum + goal.amount, 0)}
       </p>
       <p>Remaining Budget: ${remainingBudget}</p>
-      <h3>Add Expense</h3>
+      <h3>Expenses</h3>
       <input
         type="text"
         placeholder="Expense Description"
@@ -158,7 +165,7 @@ const Dashboard = ({ user, setUser }) => {
         <option value="non-essential">Non-Essential</option>
       </select>
       <button onClick={addExpense}>Add Expense</button>
-      <h3>Expenses</h3>
+
       <ul>
         {expenses.map((exp, index) => (
           <li key={index}>
@@ -215,7 +222,9 @@ const Dashboard = ({ user, setUser }) => {
       {/* Save Changes and Logout Buttons */}
       <div className="buttons-container">
         <button onClick={saveChanges}>Save Changes</button>
-        <button onClick={handleLogout}>Logout</button>
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   );
