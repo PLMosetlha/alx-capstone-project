@@ -31,11 +31,11 @@ INSTALLATION:
 
 To run this project locally, follow the following steps:
 
-Clone this repository
+Clone the following repository
 
-https://github.com/PLMosetlha/alx-capstone-project/tree/main/budget-tracker
+https://github.com/PLMosetlha/alx-capstone-project.git
 
-Navigate into the project folder:
+Navigate into the cloned repository
 
 cd budget-tracker
 

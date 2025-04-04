@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Signup = ({ setUser }) => {
-  const [isSignUp, setIsSignUp] = useState(true); // State to toggle between Sign Up and Sign In
+  const [isSignUp, setIsSignUp] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isSignUp && password !== confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+
     const user = {
       name,
       email,
@@ -22,7 +30,6 @@ const Signup = ({ setUser }) => {
     };
 
     if (isSignUp) {
-      // Sign up logic
       if (localStorage.getItem(email)) {
         setError("Account already exists with this email!");
         return;
@@ -31,7 +38,6 @@ const Signup = ({ setUser }) => {
       setUser(user);
       navigate("/dashboard");
     } else {
-      // Sign in logic
       const existingUser = JSON.parse(localStorage.getItem(email));
       if (existingUser && existingUser.password === password) {
         setUser(existingUser);
@@ -43,14 +49,14 @@ const Signup = ({ setUser }) => {
   };
 
   const toggleForm = () => {
-    setIsSignUp(!isSignUp); // Toggle between sign up and sign in
-    setError(""); // Clear any error messages when switching forms
+    setIsSignUp(!isSignUp);
+    setError("");
   };
 
   return (
     <div className="auth-container">
-      <h2>Welcome to your best budget tracker</h2>
-      <p>Lets help you save more and spend wisely</p>
+      <h2>Welcome to a simple yet effective budget tracker app</h2>
+      <p>Let's help you save more and spend wisely</p>
 
       <h2>{isSignUp ? "Sign Up" : "Sign In"}</h2>
       <form onSubmit={handleSubmit} className="auth-form">
@@ -70,15 +76,42 @@ const Signup = ({ setUser }) => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="password-container">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <span
+            className="password-toggle"
+            onClick={() => setShowPassword(!showPassword)}
+            title="Show Password"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+        {isSignUp && (
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <span
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+              title="Show Password"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+        )}
         <button type="submit">{isSignUp ? "Sign Up" : "Sign In"}</button>
-        {error && <p className="error">{error}</p>}
+        {error && <p className="error bounce">{error}</p>}
       </form>
       <p>
         {isSignUp ? "Already have an account?" : "Don't have an account?"}

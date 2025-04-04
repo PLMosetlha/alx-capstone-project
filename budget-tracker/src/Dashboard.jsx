@@ -118,7 +118,7 @@ const Dashboard = ({ user, setUser }) => {
 
   return (
     <div className="dashboard-container">
-      <h2>Welcome, {user.name}!</h2>
+      <h2 className="welcome-heading bounce">Welcome, {user.name}!</h2>
       <p className="welcome-message">
         Everyone deserves a strong financial foundation. Lets empower you to
         make informed financial decisions to achieve your goals. We are excited
@@ -126,23 +126,25 @@ const Dashboard = ({ user, setUser }) => {
         finances. Welcome aboard! Now lets get started. Enter your monthly
         budget below and explore the app's features.
       </p>
-      <h3>Initial Amount: ${initialAmount}</h3>
-      <h3>Income Budget: ${income}</h3>
+      <h3 className="summary-item">Initial Amount: ${initialAmount}</h3>
+      <h3 className="summary-item">Income Budget: ${income}</h3>
       <input
         type="number"
         placeholder="Set Income Budget"
         value={income}
         onChange={handleIncomeChange}
       />
-      <h3>Expense Summary</h3>
-      <p>
+
+      <h3 className="summary-item">Expense Summary</h3>
+      <p className="summary-item">
         Total Expenses: ${expenses.reduce((sum, exp) => sum + exp.amount, 0)}
       </p>
-      <p>
+      <p className="summary-item">
         Total Savings: $
         {savingsGoals.reduce((sum, goal) => sum + goal.amount, 0)}
       </p>
-      <p>Remaining Budget: ${remainingBudget}</p>
+      <p className="summary-item">Remaining Budget: ${remainingBudget}</p>
+
       <h3>Expenses</h3>
       <input
         type="text"
